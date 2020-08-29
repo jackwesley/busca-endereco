@@ -1,11 +1,12 @@
 const userRepository = require('../repositories/user-repository');
 const Validator = require('fastest-validator');
-const jwt = require('jsonwebtoken');
+const authService = require('../services/auth-service');
+const { authenticacte } = require('../repositories/user-repository');
 
 const contract = new Validator();
 
 module.exports = {
-    async authorize(request, response) {
+    async authenticacte(request, response) {
         const login = request.body;
 
         const schema = {
@@ -19,13 +20,18 @@ module.exports = {
             return response.status(400).json(errors);
         }
 
-        const user =  await userRepository.authenticacte(login);
+        const user = await userRepository.authenticacte(login);
 
         if (user) {
-            const token = jwt.sign({email: user.email}, 'meusegredo');
-            return response.json({token: token})
+            const token = await authService.generateToken({ email: user.email, firstName: user.firstName });
+            return response.json({
+                token: token,
+                data: {
+                    email: user.email, 
+                    firstName: user.firstName
+                }
+            });
         } else {
-            return response.status(404).json({ message: 'Usuário não encontrado' });
-        }
+            return response.status(404).json({ message: 'Usuário ou senha inválidos' });        }
     }
 };

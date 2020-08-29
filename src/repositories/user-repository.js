@@ -1,11 +1,12 @@
 const db = require('../_db/models/index');
+const md5 = require('md5');
 
 module.exports = {
     async authenticacte(login) {
         const usuarioEncontrado = await db.User.findOne({
             where: {
                 email: login.email,
-                password: login.password
+                password: md5(login.password + global.SALT_KEY)
             }
         });
 

@@ -1,6 +1,6 @@
 const userRepository = require('../repositories/user-repository');
 const Validator = require('fastest-validator');
-
+const md5 = require('md5');
 const contract = new Validator();
 
 module.exports = {
@@ -22,13 +22,18 @@ module.exports = {
 
         try {
 
-            const userCreated = await userRepository.create(user);
+            const userCreated = await userRepository.create({
+                firstName: request.body.firstName,
+                lastName: request.body.lastName,
+                email: request.body.email,
+                password: md5(request.body.password + global.SALT_KEY)
+            });
             return response.json(userCreated);
 
         } catch (error) {
-            res.status(500).send({
+            response.status(500).send({
                 message: 'Falha ao processar sua requisição',
-                data: e
+                data: error
             });
         }
     }

@@ -3,14 +3,14 @@ const correioService = new CorreiosService();
 
 module.exports = {
     async index(request, response) {
-        const { cep } = request.body;
-        const cepLimpo = removePontoETraco(cep);
+        const { zipCode } = request.body;
+        const cleanZipCode = removePontoETraco(zipCode);
 
 
-        if (validaCep(cepLimpo)) {
+        if (validateZipCode(cleanZipCode)) {
             try {
-                var endereco = await buscaEndereco(cepLimpo, 1);
-                return response.json({ rua: endereco.logradouro, bairro: endereco.bairro, cidade: endereco.localidade, estado: endereco.uf })
+                var adress = await getAdress(cleanZipCode, 1);
+                return response.json({ rua: adress.logradouro, bairro: adress.bairro, cidade: adress.localidade, estado: adress.uf })
             } catch (error) {
                 return response.status(400).json({ message: 'Cep inválido' });
             }
@@ -20,18 +20,18 @@ module.exports = {
     }
 };
 
-async function buscaEndereco(cep, expoente) {
+async function getAdress(zipCode, exponent) {
     try {
-        const endereco = await correioService.consultaCEP({ cep: cep });
-        if (endereco.erro !== true) {
-            return endereco;
+        const adress = await correioService.consultaCEP({ cep: zipCode });
+        if (adress.erro !== true) {
+            return adress;
         }
         else {
-            if (expoente <= 7) {
+            if (exponent <= 7) {
 
-                let cepNovo = corrigeCep(cep, expoente);
-                console.log(cepNovo);
-                return buscaEndereco(cepNovo.toString(), expoente + 1);
+                let newZipCode = correctZipCode(zipCode, exponent);
+                console.log(newZipCode);
+                return getAdress(newZipCode.toString(), exponent + 1);
             }
         }
     } catch (error) {
@@ -39,22 +39,22 @@ async function buscaEndereco(cep, expoente) {
     }
 }
 
-function corrigeCep(cep, expoente){
-    let fator = Math.pow(10, expoente);
-    let cepInteiro = Number(cep);
-    let cepCorrrecao = Math.trunc(cepInteiro / fator);
-    let cepCorrigido = cepCorrrecao * fator;
+function correctZipCode(zipCode, exponent) {
+    let factor = Math.pow(10, exponent);
+    let zipCodeInt = Number(zipCode);
+    let zipCodeToCorrect = Math.trunc(zipCodeInt / factor);
+    let zipCodeToGo = zipCodeToCorrect * factor;
 
-    return cepCorrigido;
+    return zipCodeToGo;
 }
 
-function removePontoETraco(cep) {
-    const cepLimpo = cep.replace(/\.|\-/g, '');
-    return cepLimpo;
+function removePontoETraco(zipCode) {
+    const zipCodeCleaned = zipCode.replace(/\.|\-/g, '');
+    return zipCodeCleaned;
 }
 
-function validaCep(cep) {
-    var validaCep = /^[0-9]{8}$/;
+function validateZipCode(zipcode) {
+    var contract = /^[0-9]{8}$/;
 
-    return validaCep.test(cep);
+    return contract.test(zipcode);
 }
