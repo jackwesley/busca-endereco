@@ -1,10 +1,13 @@
 const express = require('express');
-const BuscaEndereco = require('./controllers/BuscaEnderecoPorCep');
-const AuthController = require('./controllers/AuthController');
+const adressController = require('./controllers/adress-controller');
+const authController = require('./controllers/auth-controller');
+const aserController = require('./controllers/user-controller');
+
 const routes = express.Router();
 
-routes.post('/busca-endereco', BuscaEndereco.index);
-routes.post('/authenticate', AuthController.index);
+routes.post('/busca-endereco', adressController.index);
+routes.post('/authenticate', authController.authorize);
+routes.post('/user', aserController.create);
 
 
 
