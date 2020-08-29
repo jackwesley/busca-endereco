@@ -9,7 +9,7 @@ module.exports = {
 
         if (validaCep(cepLimpo)) {
             try {
-                var endereco = await buscaEndereco(cepLimpo, 7);
+                var endereco = await buscaEndereco(cepLimpo, 1);
                 return response.json({ rua: endereco.logradouro, bairro: endereco.bairro, cidade: endereco.localidade, estado: endereco.uf })
             } catch (error) {
                 return response.status(400).json({ message: 'Cep inválido' });
@@ -20,20 +20,18 @@ module.exports = {
     }
 };
 
-
-async function buscaEndereco(cep, indice) {
+async function buscaEndereco(cep, expoente) {
     try {
         const endereco = await correioService.consultaCEP({ cep: cep });
         if (endereco.erro !== true) {
             return endereco;
         }
         else {
+            if (expoente <= 7) {
 
-            if (indice >= 1) {
-                var cepCorrigido = adicionaZeroAoCepNaoEncontrado(cep, indice);
-                console.log(cepCorrigido)
-                indice = indice - 1;
-                return buscaEndereco(cepCorrigido, indice);
+                let cepNovo = corrigeCep(cep, expoente);
+                console.log(cepNovo);
+                return buscaEndereco(cepNovo.toString(), expoente + 1);
             }
         }
     } catch (error) {
@@ -41,22 +39,13 @@ async function buscaEndereco(cep, indice) {
     }
 }
 
+function corrigeCep(cep, expoente){
+    let fator = Math.pow(10, expoente);
+    let cepInteiro = Number(cep);
+    let cepCorrrecao = Math.trunc(cepInteiro / fator);
+    let cepCorrigido = cepCorrrecao * fator;
 
-function adicionaZeroAoCepNaoEncontrado(cep, indice) {
-
-    if (cep[indice] === "0" && indice > 0) {
-        return adicionaZeroAoCepNaoEncontrado(cep, indice - 1);
-    }
-    else {
-        resultado = replaceAt(cep, indice, "0");
-        return resultado;
-    }
-}
-
-
-function replaceAt(str, index, chr) {
-    if (index > str.length - 1) return str;
-    return str.substring(0, index) + chr + str.substring(index + 1);
+    return cepCorrigido;
 }
 
 function removePontoETraco(cep) {
