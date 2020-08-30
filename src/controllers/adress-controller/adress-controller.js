@@ -2,10 +2,9 @@ const correioService = require('../../services/correio-service');
 module.exports = {
     async index(request, response) {
         const { zipCode } = request.body;
-        const cleanZipCode = correioService.removePointAndTrace(zipCode);
+        const cleanZipCode = await correioService.removePointAndTrace(zipCode);
 
-
-        if (correioService.validateZipCode(cleanZipCode)) {
+        if (await correioService.validateZipCode(cleanZipCode)) {
             try {
                 var adress = await correioService.fetchAdress(cleanZipCode, 1);
                 return response.json({ rua: adress.logradouro, bairro: adress.bairro, cidade: adress.localidade, estado: adress.uf })

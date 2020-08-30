@@ -11,9 +11,9 @@ module.exports = {
             else {
                 if (exponent <= 7) {
 
-                    let newZipCode = correctZipCode(zipCode, exponent);
+                    let newZipCode = await correctZipCode(zipCode, exponent);
                     console.log(newZipCode);
-                    return getAdress(newZipCode.toString(), exponent + 1);
+                    return await fetchAdress(newZipCode.toString(), exponent + 1);
                 }
             }
         } catch (error) {
@@ -21,7 +21,7 @@ module.exports = {
         }
     },
 
-    correctZipCode(zipCode, exponent) {
+    async correctZipCode(zipCode, exponent) {
         let factor = Math.pow(10, exponent);
         let zipCodeInt = Number(zipCode);
         let zipCodeToCorrect = Math.trunc(zipCodeInt / factor);
@@ -29,13 +29,13 @@ module.exports = {
 
         return zipCodeToGo;
     },
-    
-    removePointAndTrace(zipCode) {
+
+    async removePointAndTrace(zipCode) {
         const zipCodeCleaned = zipCode.replace(/\.|\-/g, '');
         return zipCodeCleaned;
     },
 
-    validateZipCode(zipcode) {
+    async validateZipCode(zipcode) {
         var contract = /^[0-9]{8}$/;
 
         return contract.test(zipcode);

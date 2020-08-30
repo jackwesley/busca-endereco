@@ -1,9 +1,15 @@
+const supertest = require('supertest');
+const app = require('../../../app');
+const request = supertest(app);
 
-jest.mock('../user-controller', () => ({
+
+jest.mock('../../../repositories/user-repository', () => ({
     create: jest.fn()
 }));
 
-const userController = require('../user-controller');
+
+const userRepository = require('../../../repositories/user-repository');
+
 
 describe('user-controller', () => {
     afterEach(() => {
@@ -14,118 +20,109 @@ describe('user-controller', () => {
 
     describe("POST: /user", () => {
         it('should create user', async () => {
-            userController.create.mockResolvedValue({
-                "id": 7,
-                "firstName": "Peter",
-                "lastName": "Parker",
-                "email": "teste@aranha.com",
-                "password": "4b9bd3851d4e39b3454460629da41ee3",
-                "updatedAt": "2020-08-30T16:26:26.151Z",
-                "createdAt": "2020-08-30T16:26:26.151Z",
+            userRepository.create.mockResolvedValue({
+                id: 7,
+                firstName: "Peter",
+                lastName: "Parker",
+                email: "teste@aranha.com",
+                password: "4b9bd3851d4e39b3454460629da41ee3",
+                updatedAt: "2020-08-30T16:26:26.151Z",
+                createdAt: "2020-08-30T16:26:26.151Z",
             });
 
-            const user = {
+            const reqBody = {
                 firstName: 'Peter',
                 lastName: 'Parker',
                 email: 'teste@aranha.com',
                 password: '12345678'
             };
 
-            const createdUser = await userController.create(user);
+            const response = await request.post('/user').send(reqBody);
 
-            expect(createdUser.id).not.toBeNull();
+            expect(response.status).toBe(200);
+            expect(response.id).not.toBeNull();
+            expect(userRepository.create).toHaveBeenCalledTimes(1);
         });
 
-        it('should return an error message with first name empty', async () => {
-            userController.create.mockResolvedValue({
-                "type": "stringMin",
-                "message": "The 'firstName' field length must be greater than or equal to 1 characters long.",
-                "field": "firstName",
-                "expected": 1,
-                "actual": 0
-            });
-
-            const user = {
+        it('should return an error message with first name empty and STAUTS 400', async () => {
+            const reqBody = {
                 firstName: '',
                 lastName: 'Parker',
                 email: 'teste@aranha.com',
                 password: '12345678'
             };
 
-            const response = await userController.create(user);
-            console.log(response);
+            const response = await request.post('/user').send(reqBody);
 
-            expect(response.field).toBe("firstName");
-            expect(response.message).toBe("The 'firstName' field length must be greater than or equal to 1 characters long.");
+
+            expect(response.status).toBe(400);
+            expect(response.body).toEqual([{
+                type: "stringMin",
+                message: "The 'firstName' field length must be greater than or equal to 1 characters long.",
+                field: "firstName",
+                expected: 1,
+                actual: 0
+            }]);
         });
 
-        it('should return an error message with last name empty', async () => {
-            userController.create.mockResolvedValue({
-                "type": "stringMin",
-                "message": "The 'lastName' field length must be greater than or equal to 1 characters long.",
-                "field": "lastName",
-                "expected": 1,
-                "actual": 0
-            });
-
-            const user = {
+        it('should return an error message with last name empty and STATUS 400', async () => {
+            const reqBody = {
                 firstName: 'Peter',
                 lastName: '',
                 email: 'teste@aranha.com',
                 password: '12345678'
             };
 
-            const response = await userController.create(user);
-            console.log(response);
+            const response = await request.post('/user').send(reqBody);
 
-            expect(response.field).toBe("lastName");
-            expect(response.message).toBe("The 'lastName' field length must be greater than or equal to 1 characters long.");
+            expect(response.status).toBe(400);
+            expect(response.body).toEqual([{
+                type: "stringMin",
+                message: "The 'lastName' field length must be greater than or equal to 1 characters long.",
+                field: "lastName",
+                expected: 1,
+                actual: 0
+            }]);
         });
 
         it('should return an error message with email less than five characters', async () => {
-            userController.create.mockResolvedValue({
-                "type": "stringMin",
-                "message": "The 'email' field length must be greater than or equal to 5 characters long.",
-                "field": "email",
-                "expected": 5,
-                "actual": 0
-            });
-
-            const user = {
+            const reqBody = {
                 firstName: 'Peter',
-                lastName: 'Paker',
+                lastName: 'Parker',
                 email: '',
                 password: '12345678'
             };
 
-            const response = await userController.create(user);
-            console.log(response);
+            const response = await request.post('/user').send(reqBody);
 
-            expect(response.field).toBe("email");
-            expect(response.message).toBe("The 'email' field length must be greater than or equal to 5 characters long.");
+            expect(response.status).toBe(400);
+            expect(response.body).toEqual([{
+                type: "stringMin",
+                message: "The 'email' field length must be greater than or equal to 5 characters long.",
+                field: "email",
+                expected: 5,
+                actual: 0
+            }]);
         });
 
         it('should return an error message with password less than 6 characters', async () => {
-            userController.create.mockResolvedValue({
-                "type": "stringMin",
-                "message": "The 'password' field length must be greater than or equal to 6 characters long.",
-                "field": "password",
-                "expected": 6,
-                "actual": 1
-            });
-
-            const user = {
+            const reqBody = {
                 firstName: 'Peter',
                 lastName: 'Parker',
                 email: 'mail@gmail.com',
                 password: '128'
             };
 
-            const response = await userController.create(user);
-            console.log(response);
+           const response = await request.post('/user').send(reqBody);
 
-            expect(response.field).toBe("password");
-            expect(response.message).toBe("The 'password' field length must be greater than or equal to 6 characters long.");
+            expect(response.status).toBe(400);
+            expect(response.body).toEqual([{
+                type: "stringMin",
+                message: "The 'password' field length must be greater than or equal to 6 characters long.",
+                field: "password",
+                expected: 6,
+                actual: 3
+            }]);
         });
 
     });
