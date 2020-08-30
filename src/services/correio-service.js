@@ -12,7 +12,6 @@ module.exports = {
                 if (exponent <= 7) {
 
                     let newZipCode = await correctZipCode(zipCode, exponent);
-                    console.log(newZipCode);
                     return await fetchAdress(newZipCode.toString(), exponent + 1);
                 }
             }

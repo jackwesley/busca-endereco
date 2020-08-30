@@ -33,7 +33,7 @@ describe('adress-controller', () => {
 
             const payload =
             {
-                zipCode: '1'
+                zipCode: '37503192'
             };
 
             const response = await request.post('/busca-endereco/index')
