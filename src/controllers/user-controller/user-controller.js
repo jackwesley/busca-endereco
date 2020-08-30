@@ -1,4 +1,4 @@
-const userRepository = require('../repositories/user-repository');
+const userRepository = require('../../repositories/user-repository');
 const Validator = require('fastest-validator');
 const md5 = require('md5');
 const contract = new Validator();

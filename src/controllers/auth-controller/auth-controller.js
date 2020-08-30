@@ -1,7 +1,6 @@
-const userRepository = require('../repositories/user-repository');
+const userRepository = require('../../repositories/user-repository');
 const Validator = require('fastest-validator');
-const authService = require('../services/auth-service');
-const { authenticacte } = require('../repositories/user-repository');
+const authService = require('../../services/auth-service');
 
 const contract = new Validator();
 
