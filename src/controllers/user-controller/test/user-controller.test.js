@@ -7,16 +7,13 @@ jest.mock('../../../repositories/user-repository', () => ({
     create: jest.fn()
 }));
 
-
 const userRepository = require('../../../repositories/user-repository');
-
 
 describe('user-controller', () => {
     afterEach(() => {
         jest.resetAllMocks();
         jest.restoreAllMocks();
     });
-
 
     describe("POST: /user", () => {
         it('should create user', async () => {
