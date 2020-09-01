@@ -8,14 +8,14 @@ Com traço e ponto:
 
 ```json
 {
-    zipCode: "37.500-192"
+    "zipCode": "37.500-192"
 }
 ```
 
 Ou apenas o CEP sem traço e ponto:
-```
+```json
 {
-    zipCode: "37500192"
+    "zipCode": "37500192"
 }
 ```
 ## Development
@@ -50,7 +50,7 @@ npm test
 
 ## Docs API
 Para chamadas na API é necessário criar um usuário na aplicação fazendo um post no endpoint: `http://localhost:3333/user` com o JSON abaixo aplicado ao corpo da requisição.
-```
+```json
 {
     "firstName": "Peter",
     "lastName": "Parker",
@@ -61,7 +61,7 @@ Para chamadas na API é necessário criar um usuário na aplicação fazendo um 
 
 Após criação do usuário é necessário gerar um token com o primeiro nome e email previamente cadastrados.
 Faça um post para o endpoint:  `http://localhost:3333/authenticate` com o JSON abaixo aplicado ao corpo da requisição:
-```
+```json
 {
     "email": "teste@aranha.com",
     "password": "12345678"
@@ -75,13 +75,13 @@ Este endpoint necessita de autorização. Para ser autorizado informe no header 
 x-access-token: {token gerado no endpoint /autenticate}
 `
 
-```
+```json
 {
      "zipCode": "37503193"          
 }
 ```
 O retorno de sucesso desta requisição será o endereço relacionado ao CEP conforme JSON:
-```
+```json
 {
     "rua": "Travessa Francisco Reinaldo de Mello",
     "bairro": "Vila Poddis",
