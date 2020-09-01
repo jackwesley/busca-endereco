@@ -4,9 +4,9 @@ Esta API tem por finalidade buscar um endereço de acordo com um CEP informado.
 
 O CEP pode ser informado de duas formas:
 
-Com traço 
+Com traço e ponto:
 
-```
+```json
 {
     zipCode: "37.500-192"
 }
@@ -22,6 +22,7 @@ Ou apenas o CEP sem traço e ponto:
 
 ### Setup
 Para o setup do ambiente de desenvolvimento siga os passos abaixo.
+Clone este repositório para sua máquina local utilizando `https://github.com/jackwesley/busca-endereco.git`
 
 ### Install
 
