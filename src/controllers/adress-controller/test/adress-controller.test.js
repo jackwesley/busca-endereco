@@ -1,5 +1,6 @@
 const supertest = require('supertest');
 const app = require('../../../app');
+const authService = require('../../../services/auth-service');
 const request = supertest(app);
 
 jest.mock('../../../services/correio-service', () => ({
@@ -30,6 +31,13 @@ describe('adress-controller', () => {
             correioService.validateZipCode.mockResolvedValue(true);
             correioService.correctZipCode.mockResolvedValue("37503192");
 
+            const reqBody = {
+                email: "teste@aranha.com",
+                password: "12345678"
+            };
+            
+            const token = await authService.generateToken(reqBody);
+
             const payload =
             {
                 zipCode: '37503192'
@@ -37,7 +45,7 @@ describe('adress-controller', () => {
 
             const response = await request.post('/busca-endereco')
                .send(payload)
-               .set('x-access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1ldWVtYWlsQG1haWwuY29tIiwiZmlyc3ROYW1lIjoiSm9obiIsImlhdCI6MTU5ODc1MjI1NywiZXhwIjoxNTk4ODM4NjU3fQ.Cc3r9Rnj3ynv0B_xOUApNwLZk7z1kYo7EyVGjj34KVA');
+               .set('x-access-token', token);
 
             expect(response.body).toEqual({
                 bairro: "Vila Poddis", 
@@ -58,6 +66,13 @@ describe('adress-controller', () => {
             correioService.validateZipCode.mockResolvedValue(false);
             correioService.correctZipCode.mockResolvedValue("A1223");
 
+            const reqBody = {
+                email: "teste@aranha.com",
+                password: "12345678"
+            };
+            
+            const token = await authService.generateToken(reqBody);
+
             const payload =
             {
                 zipCode: 'A1223'
@@ -65,7 +80,7 @@ describe('adress-controller', () => {
 
             const response = await request.post('/busca-endereco')
                .send(payload)
-               .set('x-access-token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1ldWVtYWlsQG1haWwuY29tIiwiZmlyc3ROYW1lIjoiSm9obiIsImlhdCI6MTU5ODc1MjI1NywiZXhwIjoxNTk4ODM4NjU3fQ.Cc3r9Rnj3ynv0B_xOUApNwLZk7z1kYo7EyVGjj34KVA');
+               .set('x-access-token', token);
 
             expect(response.body).toEqual({
                 message: "Cep inválido"

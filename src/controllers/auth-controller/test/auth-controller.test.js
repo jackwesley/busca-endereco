@@ -2,17 +2,12 @@ const supertest = require('supertest');
 const app = require('../../../app');
 const request = supertest(app);
 
-// jest.mock('../../../services/auth-service', () => ({
-//     generateToken: jest.fn()
-// }));
 
 jest.mock('../../../repositories/user-repository', () => ({
     authenticacte: jest.fn()
 }));
 
-const authService = require('../../../services/auth-service');
 const userRepository = require('../../../repositories/user-repository');
-
 
 describe('auth-controller', () => {
     afterEach(() => {
@@ -21,7 +16,7 @@ describe('auth-controller', () => {
     });
 
     describe("POST: /authenticate", () => {
-        it('should create token', async () => {
+        it('should return a Token and STATUS 200', async () => {
             userRepository.authenticacte.mockResolvedValue({
                 id: 7,
                 firstName: "Peter",
@@ -32,21 +27,28 @@ describe('auth-controller', () => {
                 createdAt: "2020-08-30T16:26:26.151Z",
             });
 
-            // authService.generateToken.mockResolvedValue(
-            //     'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUEkgZG8gZm9ydW0gZGEgQWx1cmEiLCJzdWIiOiIxIiwiaWF0IjoxNTk1NDYyMTExLCJleHAiOjE1OTU1NDg1MTF9.yMQQKD-pgcYh0a-4b_6ZULfKnUmtmcvWcA6gbxywHd8'
-            // );
-
             const reqBody = {
                 email: "teste@aranha.com",
                 password: "12345678"
             };
             
-            const token = await authService.generateToken(reqBody);
+           
+            const response = await request.post('/authenticate').send(reqBody);
 
-            console.log(authService.generateToken(reqBody));
-            // expect(response.status).toBe(200);
-            // expect(response.id).not.toBeNull();
-            // expect(userRepository.create).toHaveBeenCalledTimes(1);
+            expect(response.status).toBe(200);
+            expect(response.body.token).not.toBeNull();            
+        });
+
+        it('should return error message of invalid user or password and STATUS 404', async () => {
+            const reqBody = {
+                email: "teste@aranha.com",
+                password: "12345678"
+            };
+           
+            const response = await request.post('/authenticate').send(reqBody);
+
+            expect(response.status).toBe(404);
+            expect(response.body).toEqual( { message: 'Usuário ou senha inválidos' });            
         });
 
     });
