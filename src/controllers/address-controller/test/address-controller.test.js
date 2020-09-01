@@ -18,8 +18,8 @@ describe('adress-controller', () => {
         jest.restoreAllMocks();
     });
 
-    describe('POST: /busca-endereco/', () => {
-        it('should return an adress', async () => {
+    describe('POST: /fetch-address/', () => {
+        it('should return an address', async () => {
             correioService.fetchAdress.mockResolvedValue({
                 logradouro: "Rua Benedito Messias",
                 bairro: "Vila Poddis",
@@ -43,7 +43,7 @@ describe('adress-controller', () => {
                 zipCode: '37503192'
             };
 
-            const response = await request.post('/busca-endereco')
+            const response = await request.post('/fetch-address')
                .send(payload)
                .set('x-access-token', token);
 
@@ -78,7 +78,7 @@ describe('adress-controller', () => {
                 zipCode: 'A1223'
             };
 
-            const response = await request.post('/busca-endereco')
+            const response = await request.post('/fetch-address')
                .send(payload)
                .set('x-access-token', token);
 

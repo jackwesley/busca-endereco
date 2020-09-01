@@ -1,5 +1,5 @@
 const express = require('express');
-const adressController = require('./controllers/adress-controller/adress-controller');
+const adressController = require('./controllers/address-controller/address-controller');
 const authController = require('./controllers/auth-controller/auth-controller');
 const userController = require('./controllers/user-controller/user-controller');
 const authService = require('./services/auth-service');
@@ -30,7 +30,7 @@ const routes = express.Router();
 
 /**
  * @swagger
- * /busca-endereco:
+ * /fetch-address:
  *   post:
  *     summary: Busca um endereço.
  *     consumes:
@@ -88,7 +88,7 @@ const routes = express.Router();
  *               type: string
  *               example: Not Found.
  */
-routes.post('/busca-endereco', authService.authorize, adressController.index);
+routes.post('/fetch-address', authService.authorize, adressController.index);
 
 /**
  * @swagger
