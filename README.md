@@ -18,38 +18,39 @@ Ou apenas o CEP sem traço e ponto:
     "zipCode": "37500192"
 }
 ```
-## Development
+## Desenvolvimento
 
 ### Setup
 Para o setup do ambiente de desenvolvimento siga os passos abaixo.
 Clone este repositório para sua máquina local utilizando `https://github.com/jackwesley/busca-endereco.git`
 
-### Install
+### Instalar todos os pacotes necessários
 
 ```
 npm install
 ```
 
-### Start the database
+### Inicializar o banco de dados
 
 ```
 npx sequelize db:migrate
 ```
 
-### Run
+### Iniciar a aplicação
 
 ```
 npm start
 ```
 
-### Test
+### Iniciar bateria de testes
 
 ```
 npm test
 ```
 
-## Docs API
+## Documentação da API
 Para chamadas na API é necessário criar um usuário na aplicação fazendo um post no endpoint: `http://localhost:3333/user` com o JSON abaixo aplicado ao corpo da requisição.
+
 ```json
 {
     "firstName": "Peter",
@@ -61,6 +62,7 @@ Para chamadas na API é necessário criar um usuário na aplicação fazendo um 
 
 Após criação do usuário é necessário gerar um token com o primeiro nome e email previamente cadastrados.
 Faça um post para o endpoint:  `http://localhost:3333/authenticate` com o JSON abaixo aplicado ao corpo da requisição:
+
 ```json
 {
     "email": "teste@aranha.com",
@@ -80,7 +82,9 @@ x-access-token: {token gerado no endpoint /autenticate}
      "zipCode": "37503193"          
 }
 ```
+
 O retorno de sucesso desta requisição será o endereço relacionado ao CEP conforme JSON:
+
 ```json
 {
     "rua": "Travessa Francisco Reinaldo de Mello",
@@ -89,6 +93,7 @@ O retorno de sucesso desta requisição será o endereço relacionado ao CEP con
     "estado": "MG"
 }
 ```
+
 Caso o CEP esteja válido e não seja encontrado um endereço relacionado, a API atualizará o CEP, substituindo o ultimo dígito mais a direita por zero(0).
 Por exemplo caso o CEP `37501123` não possua um endereço cadastrado a API atualizará o CEP para o valor `37501120`, caso não encontre novamente substitui o próximo digito por zero, ficando da seguinte forma `37501100`, e assim sucessivamente até encontrar um endereço. Em caso de CEP inválido a API retornará a mensagem CEP Inválido.
 
