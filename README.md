@@ -117,19 +117,19 @@ Para o request temos os seguintes componentes:
 
     1.Request(pedido)
         1.1-Linha de pedido: 
-            Identificador do Método: (get/post)
-            URI do recurso: seria o caminho para onde vai a requisição.
-            Versão do protocolo
+            1.1.1-Identificador do Método: (get/post)
+            1.1.2-URI do recurso: seria o caminho para onde vai a requisição.
+            1.1.3-Versão do protocolo
         1.2-Cabeçalho
-            Cabeçalho Geral 
-            Cabeçalho de Requisição
-            Cabeçalho de Entidade
+            1.2.1-Cabeçalho Geral 
+            1.2.2-Cabeçalho de Requisição
+            1.2.3-Cabeçalho de Entidade
         1.3-Corpo/Mensagem
     2.Response(resposta)
         2.1-Linha de Status
-            Versão do Protocolo
-            Código numérico do Status
-            Texto associado ao Status
+            2.1.1-Versão do Protocolo
+            2.1.2-Código numérico do Status
+            2.1.3-Texto associado ao Status
         2.2-Cabeçalho
         2.3-Corpo/Mensagem
 
