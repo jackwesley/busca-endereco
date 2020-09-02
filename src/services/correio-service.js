@@ -4,15 +4,15 @@ const correioService = new CorreiosService();
 module.exports = {
     async fetchAdress(zipCode, exponent) {
         try {
-            const adress = await correioService.consultaCEP({ cep: zipCode });
-            if (adress.erro !== true) {
-                return adress;
+            const address = await correioService.consultaCEP({ cep: zipCode });
+
+            if (address.erro !== true) {
+                return address;
             }
             else {
                 if (exponent <= 7) {
-
-                    let newZipCode = await correctZipCode(zipCode, exponent);
-                    return await fetchAdress(newZipCode.toString(), exponent + 1);
+                    let newZipCode = await this.correctZipCode(zipCode, exponent);
+                    return await this.fetchAdress(newZipCode.toString(), exponent + 1);
                 }
             }
         } catch (error) {
@@ -34,10 +34,10 @@ module.exports = {
         return zipCodeCleaned;
     },
 
-    async validateZipCode(zipcode) {
+    async validateZipCode(zipCode) {
         var contract = /^[0-9]{8}$/;
 
-        return contract.test(zipcode);
+        return contract.test(zipCode);
     }
 
 };
