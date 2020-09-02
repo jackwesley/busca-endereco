@@ -99,5 +99,43 @@ Por exemplo caso o CEP `37501123` não possua um endereço cadastrado a API atua
 
 
 ### Swagger
-Para acessar a documentação via swagger utilize o link: `http://localhost:3333/api-docs/`
+Para acessar a documentação via swagger utilize o link: `http://localhost:3333/api-docs`
 
+### Saúde da aplicação
+Para verificar a saúde da aplicação, ou seja, se ela está disponível use o link: `http://localhost:3333/health`
+Se a API se encontrar em um status "saudável" este endpoint retornará o STATUS 200 Ok.
+
+# Extras 
+Esta API foi desenvolvida com Node.js, utilizando banco de dados Sqlite3. A razão da escolha dessas tecnologias se dá pelo fato de ser uma tarefa simples, o que acabaria ficando um pouco mais complexo tanto o código como o número de arquivos para desenvolver a mesma proposta utilizando uma linguagem fortemente tipada. 
+Para criação desta aplicação levou-se em conta o padrão de MVC (Model, View, Controller).
+Utilizando boas práticas de programação como SOLID.
+
+# Protocolo HTTP 
+O protocolo HTTP(*Hypertext Transfer Protocol*) é um protocolo que permite a comunicação entre um cliente e um servidor utilizando um modelo de *request*(pedido) e *response*(resposta). Onde o cliente que se interessa por um site hospedado em um servidor, faz uma requisição de dados e caso exista no servidor ele retorna com a resposta das informações contidas nele. É importante lembrar que a conexão não é persistente, ou seja, a cada nova requisição de informação uma nova conexão é criada e todo ciclo de requisição/resposta é repetido.
+Os componentes para se fazer a comunicação são request e response já mencionados. 
+Para o request temos os seguintes componentes
+    1.Request(pedido)
+        1.1-Linha de pedido: 
+            Identificador do Método: (get/post)
+            URI do recurso: seria o caminho para onde vai a requisição.
+            Versão do protocolo
+        1.2-Cabeçalho
+            Cabeçalho Geral 
+            Cabeçalho de Requisição
+            Cabeçalho de Entidade
+        1.3-Corpo/Mensagem
+
+    2.Response(resposta)
+        2.1-Linha de Status
+            Versão do Protocolo
+            Código numérico do Status
+            Texto associado ao Status
+        2.2-Cabeçalho
+        2.3-Corpo/Mensagem
+
+
+O protocolo HTTP funciona da seguinte forma.
+    1- O cliente(navegador) se conecta a um servidor e faz uma requisição HTTP de uma página desejada.
+    2- O servidor ao receber esta requisição, faz uma verificação se o conteúdo requisitado existe.
+    3- Caso exista ele retorna as informações para o cliente que pode mostrar em forma de imagens, texto e outras mídias.
+    4- Caso não exista geralmente é exibida uma mensagem de erro HTTP 404 - Not Found(não encontrado).
