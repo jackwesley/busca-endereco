@@ -20,7 +20,7 @@ module.exports = {
         logger.error({ erros });
 
         if (Array.isArray(erros) && erros.length) {
-            logger.error({ request: request, errors: errors });
+            logger.error({ request: request, errors: erros });
 
             return response.status(400).json(erros);
         }
@@ -38,7 +38,7 @@ module.exports = {
             return response.json(userCreated);
 
         } catch (error) {
-            logger.info({ request: request, error: error });
+            logger.error({ request: request, error: error });
             
             response.status(500).send({
                 message: 'Falha ao processar sua requisição',
