@@ -134,7 +134,9 @@ O request e o response são compostos pelos seguintes componentes:
         2.3-Corpo/Mensagem
 
 O protocolo HTTP funciona da seguinte forma.
+```
     1- O cliente(navegador) se conecta a um servidor e faz uma requisição HTTP de uma página desejada.
     2- O servidor ao receber esta requisição, faz uma verificação se o conteúdo requisitado existe.
     3- Caso exista ele retorna as informações para o cliente que pode mostrar em forma de imagens, texto e outras mídias.
     4- Caso não exista geralmente é exibida uma mensagem de erro HTTP 404 - Not Found(não encontrado).
+```
