@@ -113,7 +113,7 @@ Utilizando boas práticas de programação como SOLID.
 # Protocolo HTTP 
 O protocolo HTTP(*Hypertext Transfer Protocol*) é um protocolo que permite a comunicação entre um cliente e um servidor utilizando um modelo de *request*(pedido) e *response*(resposta). Onde o cliente que se interessa por um site hospedado em um servidor, faz uma requisição de dados e caso exista no servidor ele retorna com a resposta das informações contidas nele. É importante lembrar que a conexão não é persistente, ou seja, a cada nova requisição de informação uma nova conexão é criada e todo ciclo de requisição/resposta é repetido.
 Os componentes para se fazer a comunicação são request e response já mencionados. 
-Para o request temos os seguintes componentes:
+O request e o response são compostos pelos seguintes componentes:
 
     1.Request(pedido)
         1.1-Linha de pedido: 
