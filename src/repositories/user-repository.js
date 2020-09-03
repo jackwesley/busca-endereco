@@ -3,7 +3,6 @@ const md5 = require('md5');
 
 module.exports = {
     async authenticacte(login) {
-        console.log(SALT_KEY);
         const usuarioEncontrado = await db.User.findOne({
             where: {
                 email: login.email,

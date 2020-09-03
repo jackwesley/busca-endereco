@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const userRepo = require('../repositories/user-repository');
 
 module.exports = {
     async generateToken(data) {
@@ -23,10 +24,23 @@ module.exports = {
                         message: 'Token Invalido'
                     });
                 } else {
-                    next();
+                    var login = {
+                        email: decoded.email,
+                        password: decoded.password
+                    }
+
+                    const user = userRepo.authenticacte(login);
+                    if (user) {
+                        next();
+                    }
+                    else {
+                        response.status(401).json({
+                            message: 'Token Invalido'
+                        });
+
+                    }
                 }
             });
         }
     }
-
 };
